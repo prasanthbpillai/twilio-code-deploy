@@ -1,12 +1,13 @@
 name: TwilioDevOps
 on: push
 jobs:
-  runs-on: ubuntu-latest
-  strategy:
-    matrix:
-      node: [6, 8, 10]
-  steps:
-    # Configures the node version used on GitHub-hosted runners
-      with:
-        # The Node.js version to configure
-        node-version: ${{ matrix.node }}
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x]
+    steps:
+      - name: first 
+        run: node -v
