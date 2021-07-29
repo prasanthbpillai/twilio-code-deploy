@@ -10,4 +10,5 @@ jobs:
         folder: [Plugins/plugin-test1, Plugins/plugin-test2]
     steps:
       - name: first 
-        run: echo ${{ matrix.folder }}
+        working-directory: ${{ matrix.folder }}
+        run: npm install
