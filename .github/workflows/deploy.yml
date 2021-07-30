@@ -5,8 +5,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: RepoPrep 
-        uses: actions/checkout@v2
-     
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '14'
     
   build:
     needs: prep
@@ -16,9 +18,6 @@ jobs:
         folder: [Plugins/plugin-test1, Plugins/plugin-test2]
     steps:
       - name: NodePrep
-      - uses: actions/setup-node@v1
-        with:
-          node-version: '14'
       - working-directory: ${{ github.workspace }} 
       - run: npm -v
       - run: pwd
