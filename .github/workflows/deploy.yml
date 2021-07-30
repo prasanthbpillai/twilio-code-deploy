@@ -17,6 +17,9 @@ jobs:
     steps:
       - name: NodePrep
         uses: actions/setup-node@v1
+        with:
+          node-version: '14'
+      - run: npm -v
       - name: Building 
         working-directory: ${{ matrix.folder }}
         run: npm install
