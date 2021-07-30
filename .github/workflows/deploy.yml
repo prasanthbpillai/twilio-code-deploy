@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        folder: [Plugins/plugin-test1, Plugins/plugin-test2]
+        folder: [./Plugins/plugin-test1, ./Plugins/plugin-test2]
     steps:
       - name: Building 
         working-directory: ${{ matrix.folder }}
