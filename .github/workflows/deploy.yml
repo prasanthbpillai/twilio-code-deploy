@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Preparing 
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
   build:
     runs-on: ubuntu-latest
     strategy:
