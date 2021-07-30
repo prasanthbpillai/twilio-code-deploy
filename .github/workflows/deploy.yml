@@ -16,10 +16,9 @@ jobs:
         folder: [Plugins/plugin-test1, Plugins/plugin-test2]
     steps:
       - name: NodePrep
-        uses: actions/setup-node@v1
+      - working-directory: ${{ matrix.folder }}
+      - uses: actions/setup-node@v1
         with:
           node-version: '14'
       - run: npm -v
-      - name: Building 
-        working-directory: ${{ matrix.folder }}
-        run: npm install
+      - run: npm install
