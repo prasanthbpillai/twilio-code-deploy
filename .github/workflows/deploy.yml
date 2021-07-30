@@ -9,6 +9,7 @@ jobs:
       - name: Echo
         run: echo ${{ env.GITHUB_WORKSPACE }}
   build:
+    needs: prep
     runs-on: ubuntu-latest
     strategy:
       matrix:
