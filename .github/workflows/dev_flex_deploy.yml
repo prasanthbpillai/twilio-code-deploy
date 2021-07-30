@@ -19,13 +19,17 @@ jobs:
       matrix:
         folder: ${{fromJson(needs.directories.outputs.dir)}}
     steps:
-      - name: RepoPrep
+      - name: RepositoryPrep
         uses: actions/checkout@v2
 
-      - name: NodePrep
+      - name: NodeJSPrep
         uses: actions/setup-node@v1
         with:
           node-version: '14'
       - name: Building 
         working-directory:   Flex/${{  matrix.folder }}
-        run: ls -l
+        run: npm install
+        run: npm install twilio-cli
+        run: npm run test
+        run: npm run lint
+        run: TWILIO_ACCOUNT_SID=${{secret.DEV_ACCOUNT_SID}} TWILIO_AUTH_TOKEN=${{secret.DEV_AUTH_TOKEN}} twilio flex:plugins:deploy
