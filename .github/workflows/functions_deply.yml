@@ -1,0 +1,19 @@
+name: TwilioFunctionsDevOps
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: RepoPrep
+        uses: actions/checkout@v2
+
+      - name: NodePrep
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14'
+      - name: Building 
+        working-directory: Functions
+        run: ls -l
