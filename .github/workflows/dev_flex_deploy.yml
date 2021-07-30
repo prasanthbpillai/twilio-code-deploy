@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        folder: ${{fromJson(needs.directories.outputs.dir)}}
+        folder: ${{fromJson(needs.prepare.outputs.dir)}}
     steps:
       - name: RepositoryPrep
         uses: actions/checkout@v2
