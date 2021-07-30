@@ -6,8 +6,7 @@ jobs:
     steps:
       - name: RepoPrep 
         uses: actions/checkout@v2
-      - name: NodePrep
-        uses: actions/setup-node@v1
+     
     
   build:
     needs: prep
@@ -16,6 +15,8 @@ jobs:
       matrix:
         folder: [Plugins/plugin-test1, Plugins/plugin-test2]
     steps:
+      - name: NodePrep
+        uses: actions/setup-node@v1
       - name: Building 
         working-directory: ${{ matrix.folder }}
         run: npm install
