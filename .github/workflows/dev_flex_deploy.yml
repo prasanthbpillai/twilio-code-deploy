@@ -1,4 +1,4 @@
-name: TwilioDevOps
+name: TwilioFlexPluginDevOps
 
 on: push
 
@@ -31,4 +31,4 @@ jobs:
         run: npm install
           npm install twilio-cli
           npm run lint
-          TWILIO_ACCOUNT_SID=${{secret.DEV_ACCOUNT_SID}} TWILIO_AUTH_TOKEN=${{secret.DEV_AUTH_TOKEN}} twilio flex:plugins:deploy
+          TWILIO_ACCOUNT_SID=${{secrets.DEV_ACCOUNT_SID}} TWILIO_AUTH_TOKEN=${{secrets.DEV_AUTH_TOKEN}} twilio flex:plugins:deploy
