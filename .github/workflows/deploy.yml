@@ -1,21 +1,21 @@
 name: TwilioDevOps
-on: push
-jobs:
-  prep:
-    runs-on: ubuntu-latest
-    steps:
-      - name: RepoPrep 
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
 
-    
+on: push
+
+jobs:
   build:
-    needs: prep
     runs-on: ubuntu-latest
- 
+    strategy:
+      matrix:
+        folder: [Plugins/plugin-test1, Plugins/plugin-test2]
     steps:
+      - name: RepoPrep
+        uses: actions/checkout@v2
+
       - name: NodePrep
-      - working-directory: ${{ github.workspace }} 
-      - run: npm -v
-      - run: pwd
-      - run: ls
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14'
+      - name: Building 
+        working-directory: ${{ matrix.folder }}
+        run: ls -l
