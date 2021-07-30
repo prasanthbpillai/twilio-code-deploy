@@ -28,8 +28,8 @@ jobs:
           node-version: '14'
 
       - name: Building 
-        working-directory:   Flex/${{  matrix.folder }}
-        run: npm install
+      - run: cd Flex/${{  matrix.folder }}
+      - run: npm install
       - run: npm install twilio-cli -g
       - run: twilio plugins:install @twilio-labs/plugin-flex
       - run: TWILIO_ACCOUNT_SID=${{secrets.DEV_ACCOUNT_SID}} TWILIO_AUTH_TOKEN=${{secrets.DEV_AUTH_TOKEN}} twilio flex:plugins:deploy --changelog "check version"
