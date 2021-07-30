@@ -21,5 +21,4 @@ jobs:
           node-version: '14'
       - run: npm -v
       - name: Building 
-        working-directory: ${{ matrix.folder }}
         run: ls -l
