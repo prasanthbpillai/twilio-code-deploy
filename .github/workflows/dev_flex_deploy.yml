@@ -28,7 +28,7 @@ jobs:
           node-version: '14'
 
       - name: Building 
-      - run: cd Flex/${{  matrix.folder }}
+        run: cd Flex/${{  matrix.folder }}
       - run: npm install
       - run: npm install twilio-cli -g
       - run: twilio plugins:install @twilio-labs/plugin-flex
