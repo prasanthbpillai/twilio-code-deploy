@@ -31,7 +31,6 @@ jobs:
         working-directory: Flex/${{  matrix.folder }}
       - run: npm install
       - run: npm install twilio-cli -g
-      - run: twilio plugins:install @twilio-labs/plugin-flex
-      - run: pwd
+      - run: twilio plugins:install @twilio-labs/plugin-flex | ls
       - run: TWILIO_ACCOUNT_SID=${{secrets.DEV_ACCOUNT_SID}} TWILIO_AUTH_TOKEN=${{secrets.DEV_AUTH_TOKEN}} twilio flex:plugins:deploy --changelog "check version"
       - run: TWILIO_ACCOUNT_SID=${{secrets.DEV_ACCOUNT_SID}} TWILIO_AUTH_TOKEN=${{secrets.DEV_AUTH_TOKEN}} twilio flex:plugins:release --plugin ${{  matrix.folder }}@$(node -p -e "require('./package.json').version")
