@@ -37,7 +37,7 @@ export default class Test1Plugin extends FlexPlugin {
   registerReducers(manager) {
     if (!manager.store.addReducer) {
       // eslint: disable-next-line
-      console.error(`You need FlexUI > 1.9.0 to use built-in redux; you are currently on ${VERSION}`);
+      console.error(`You need FlexUI > 1.9.0 to use built-in redux; you are testin on ${VERSION}`);
       return;
     }
 

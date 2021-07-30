@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        folder: [Plugins/plugin-test1, Plugins/plugin-test2]
+        folder: [Flex/plugin-test1, Flex/plugin-test2]
     steps:
       - name: RepoPrep
         uses: actions/checkout@v2
