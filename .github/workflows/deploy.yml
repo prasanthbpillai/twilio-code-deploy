@@ -4,10 +4,11 @@ jobs:
   prep:
     runs-on: ubuntu-latest
     steps:
-      - name: Preparing 
+      - name: RepoPrep 
         uses: actions/checkout@v2
-      - name: Echo
-        run: echo ${{ env.GITHUB_WORKSPACE }}
+      - name: NodePrep
+        uses: actions/setup-node@v1
+    
   build:
     needs: prep
     runs-on: ubuntu-latest
