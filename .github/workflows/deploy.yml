@@ -16,7 +16,7 @@ jobs:
         folder: [Plugins/plugin-test1, Plugins/plugin-test2]
     steps:
       - name: NodePrep
-        uses: actions/setup-node@v1
+      - uses: actions/setup-node@v1
         with:
           node-version: '14'
       - working-directory: ${{ github.workspace }} 
