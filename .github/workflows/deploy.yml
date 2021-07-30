@@ -27,5 +27,5 @@ jobs:
         with:
           node-version: '14'
       - name: Building 
-        working-directory: ${{ matrix.folder }}
+        working-directory:   Flex/${{  matrix.folder }}
         run: ls -l
