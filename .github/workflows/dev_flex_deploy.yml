@@ -29,6 +29,5 @@ jobs:
       - name: Building 
         working-directory:   Flex/${{  matrix.folder }}
         run: npm install
-      - run: cd ..;npm install twilio-cli; cd Flex/${{  matrix.folder }}
-      - run: npm run lint
+      - run: npm install twilio-cli -g     
       - run: TWILIO_ACCOUNT_SID=${{secrets.DEV_ACCOUNT_SID}} TWILIO_AUTH_TOKEN=${{secrets.DEV_AUTH_TOKEN}} twilio flex:plugins:deploy
