@@ -1,14 +1,17 @@
 name: TwilioDevOps
 on: push
 jobs:
-  build:
-
+  prep:
     runs-on: ubuntu-latest
-
+    steps:
+      - name: Preparing 
+      - uses: actions/checkout@master
+  build:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         folder: [Plugins/plugin-test1, Plugins/plugin-test2]
     steps:
-      - name: first 
+      - name: Building 
         working-directory: ${{ matrix.folder }}
         run: npm install
