@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - id: set-dirs # Give it an id to handle to get step outputs in the outputs key above
-        run: echo "::set-output name=dir::$(cd Flex;ls -d */ | jq -R -s -c 'split("\n")[:-1]')"
+        run: echo "::set-output name=dir::$(cd Flex;ls -d */ | sed 's/.$//'| jq -R -s -c 'split("\n")[:-1]')"
         # Define step output named dir base on ls command transformed to JSON thanks to jq
   build:
     needs: directories
@@ -33,3 +33,4 @@ jobs:
       - run: npm install twilio-cli -g
       - run: twilio plugins:install @twilio-labs/plugin-flex
       - run: TWILIO_ACCOUNT_SID=${{secrets.DEV_ACCOUNT_SID}} TWILIO_AUTH_TOKEN=${{secrets.DEV_AUTH_TOKEN}} twilio flex:plugins:deploy --changelog "check version"
+      - run: twilio flex:plugins:release --plugin ${{  matrix.folder }}
