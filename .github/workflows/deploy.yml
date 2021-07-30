@@ -6,6 +6,8 @@ jobs:
     steps:
       - name: Preparing 
         uses: actions/checkout@v2
+      - name: Echo
+        run: echo ${{ env.GITHUB_WORKSPACE }}
   build:
     runs-on: ubuntu-latest
     strategy:
