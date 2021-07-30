@@ -20,6 +20,5 @@ jobs:
         with:
           node-version: '14'
       - run: npm -v
-      - name: Building 
       - run: pwd
       - run: ls
