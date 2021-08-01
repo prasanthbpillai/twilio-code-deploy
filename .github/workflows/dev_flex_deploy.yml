@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v2
       - id: set-dirs # Give it an id to handle to get step outputs in the outputs key above
         run: echo "::set-output name=dir::$(cd Flex;ls -d */ | sed 's/.$//'| jq -R -s -c 'split("\n")[:-1]')"
-        # Define step output named dir base on ls command transformed to JSON thanks to jq
+        # Define step output named dir base on ls command transformed to JSON thanks to jq.
   buildandrelease:
     needs: prepare
     runs-on: ubuntu-latest
