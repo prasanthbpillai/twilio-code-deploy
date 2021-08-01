@@ -3,31 +3,37 @@ name: TwilioFlexPluginDevOps
 on: push
 
 jobs:
-  directories: # Job that list subdirectories
+  prepare: # Job that list subdirectories
     runs-on: ubuntu-latest
     outputs:
       dir: ${{ steps.set-dirs.outputs.dir }} # generate output name dir by using inner step output
     steps:
       - uses: actions/checkout@v2
       - id: set-dirs # Give it an id to handle to get step outputs in the outputs key above
-        run: echo "::set-output name=dir::$(cd Flex;ls -d */ | jq -R -s -c 'split("\n")[:-1]')"
+        run: echo "::set-output name=dir::$(cd Flex;ls -d */ | sed 's/.$//'| jq -R -s -c 'split("\n")[:-1]')"
         # Define step output named dir base on ls command transformed to JSON thanks to jq
-  build:
-    needs: directories
+  buildandrelease:
+    needs: prepare
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        folder: ${{fromJson(needs.directories.outputs.dir)}}
+        folder: ${{fromJson(needs.prepare.outputs.dir)}}
     steps:
       - name: RepositoryPrep
         uses: actions/checkout@v2
-
       - name: NodeJSPrep
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: '14'
+      - name: GlobalPackages
+        run: npm install twilio-cli -g 
+      - run: twilio plugins:install @twilio-labs/plugin-flex 
       - name: Building 
-        working-directory:   Flex/${{  matrix.folder }}
+        working-directory: Flex/${{  matrix.folder }}
         run: npm install
-      - run: npm install twilio-cli -g     
-      - run: TWILIO_ACCOUNT_SID=${{secrets.DEV_ACCOUNT_SID}} TWILIO_AUTH_TOKEN=${{secrets.DEV_AUTH_TOKEN}} twilio flex:plugins:deploy
+      - name: DeployingPlugin
+        working-directory: Flex/${{  matrix.folder }}
+        run: TWILIO_ACCOUNT_SID=${{secrets.DEV_ACCOUNT_SID}} TWILIO_AUTH_TOKEN=${{secrets.DEV_AUTH_TOKEN}} twilio flex:plugins:deploy --changelog "check version"
+      - name: ReleasePlugin
+        working-directory: Flex/${{  matrix.folder }}
+        run: TWILIO_ACCOUNT_SID=${{secrets.DEV_ACCOUNT_SID}} TWILIO_AUTH_TOKEN=${{secrets.DEV_AUTH_TOKEN}} twilio flex:plugins:release --plugin ${{  matrix.folder }}@$(node -p -e "require('./package.json').version")
