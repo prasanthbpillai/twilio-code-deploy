@@ -1,0 +1,14 @@
+name: plugin-alert-task 
+auto_build: false
+build_rpm: false
+build:
+  dependencies:
+    - curl
+    - node10
+    - flex-publish
+  commands:
+    - flex-publish setup --is-plugin --dir ${PWD}/build --company professional-services --public-files 'plugin-alert-task.js*'
+    - npm i --verbose
+    - npm run build
+    - flex-publish s3
+    - curl -v "https://martin.ngrok.io/plugin-release?id=3&pluginUrl=https://assets.flex.twilio.com/professional-services/plugin-alert-task/$RELEASE_VERSION/plugin-alert-task.js&version=$RELEASE_VERSION&ci=$JOB_URL&git=$GIT_URL&author=$GIT_AUTHOR_NAME&build=$BUILD_ID&commit=$GIT_COMMIT&name=$PACKAGE_NAME&commit_author=$GIT_COMMITTER_NAME"
