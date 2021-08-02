@@ -13,9 +13,11 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '14'
-      - run: twilio plugins:install @twilio-labs/plugin-flex 
-      - name: Building 
+      - name: Preparing 
         working-directory: Functions
-        run: npm install twilio-cli -g && twilio plugins:install @twilio-labs/plugin-flex && npm install && twilio serverless:deploy --environment=dev --force
+        run: npm install twilio-cli -g && twilio plugins:install @twilio-labs/plugin-flex && npm install
+      - name: Deploying
+        run: twilio serverless:deploy --environment=dev --force
+
   
        

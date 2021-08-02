@@ -27,13 +27,16 @@ jobs:
         with:
           node-version: '14'
       - name: GlobalPackages
-        run: npm install twilio-cli -g && twilio plugins:install @twilio-labs/plugin-flex 
-      - name: Building 
-        working-directory: Flex/${{  matrix.folder }} # work within the subdirectory of the plugin
-        run: npm install && twilio flex:plugins:test
-      - name: DeployingPlugin
+        run: npm install twilio-cli -g 
+      - run: twilio plugins:install @twilio-labs/plugin-flex 
+      - name: Preparing 
         working-directory: Flex/${{  matrix.folder }}
-        run: TWILIO_ACCOUNT_SID=${{secrets.DEV_ACCOUNT_SID}} TWILIO_AUTH_TOKEN=${{secrets.DEV_AUTH_TOKEN}} twilio flex:plugins:deploy --changelog "check changelog"
-      - name: ReleasingPlugin
+        run: npm install
+      - name: Testing
+        run: twilio flex:plugins:test
+      - name: Deploying
+        working-directory: Flex/${{  matrix.folder }}
+        run: TWILIO_ACCOUNT_SID=${{secrets.DEV_ACCOUNT_SID}} TWILIO_AUTH_TOKEN=${{secrets.DEV_AUTH_TOKEN}} twilio flex:plugins:deploy --changelog "check version"
+      - name: Releasing
         working-directory: Flex/${{  matrix.folder }}
         run: TWILIO_ACCOUNT_SID=${{secrets.DEV_ACCOUNT_SID}} TWILIO_AUTH_TOKEN=${{secrets.DEV_AUTH_TOKEN}} twilio flex:plugins:release --plugin ${{  matrix.folder }}@$(node -p -e "require('./package.json').version")
