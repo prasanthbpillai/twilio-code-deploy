@@ -30,7 +30,7 @@ export default class Test1Plugin extends FlexPlugin {
   }
 
   /**
-   * Registers the plugin reducers - test
+   * Registers the plugin reducers 
    *
    * @param manager { Flex.Manager }
    */
