@@ -33,7 +33,7 @@ jobs:
         working-directory: Flex/${{  matrix.folder }}
         run: npm install
       - name: Testing
-        run: twilio flex:plugins:test
+        run: TWILIO_ACCOUNT_SID=${{secrets.DEV_ACCOUNT_SID}} TWILIO_AUTH_TOKEN=${{secrets.DEV_AUTH_TOKEN}} twilio flex:plugins:test
       - name: Deploying
         working-directory: Flex/${{  matrix.folder }}
         run: TWILIO_ACCOUNT_SID=${{secrets.DEV_ACCOUNT_SID}} TWILIO_AUTH_TOKEN=${{secrets.DEV_AUTH_TOKEN}} twilio flex:plugins:deploy --changelog "check version"
