@@ -11,9 +11,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - id: set-dirs # Give it an id to handle to get step outputs in the outputs key above
-        run: echo "::set-output name=dir::$(cd Flex;ls -d */ | sed 's/.$//'| jq -R -s -c 'split("\n")[:-1]')"
+        run: |
+          echo "::set-output name=dir::$(curl -s  -H "Authorization: token ${{secrets.REPO_TOKEN}}" https://api.github.com/repos/${{github.repository}}/pulls/${{github.event.pull_request.number}}/files | jq -r '.[]  .filename' | cut -d "/" -f 1,2 | sed '/^Functions/d'  | jq -R -s -c 'split("\n")[:-1]')"
         # Define step output named dir base on ls command transformed to JSON using jq.
-      - run: git diff --name-only HEAD^ HEAD
+        # replace the above curl command with the following if you want to run the buildandrelease for every commit
+        # cd Flex;ls -d */ | sed 's/.$//'| jq -R -s -c 'split("\n")[:-1]'
   buildandrelease:
     needs: prepare
     runs-on: ubuntu-latest
