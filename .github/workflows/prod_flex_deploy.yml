@@ -1,8 +1,8 @@
-name: Twilio Flex Plugins - DEVELOP
+name: Twilio Flex Plugins - PRODUCTION
 on: 
   push:
     branches:
-      - develop
+      - master
 jobs:
   prepare: # Job that list subdirectories inside flex
     runs-on: ubuntu-latest

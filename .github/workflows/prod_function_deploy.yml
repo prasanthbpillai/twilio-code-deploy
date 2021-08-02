@@ -1,8 +1,8 @@
-name: Twilio Functions - DEVELOP
+name: Twilio Functions - PRODUCTION
 on: 
   push:
     branches: 
-    - develop
+    - master
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,6 +16,6 @@ jobs:
       - run: twilio plugins:install @twilio-labs/plugin-flex 
       - name: Building 
         working-directory: Functions
-        run: npm install twilio-cli -g && twilio plugins:install @twilio-labs/plugin-flex && npm install && twilio serverless:deploy --environment=dev --force
+        run: npm install twilio-cli -g && twilio plugins:install @twilio-labs/plugin-flex && twilio serverless:deploy --environment=prod --force
   
        
