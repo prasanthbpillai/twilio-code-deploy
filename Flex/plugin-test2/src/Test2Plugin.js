@@ -13,7 +13,7 @@ export default class Test2Plugin extends FlexPlugin {
   }
 
   /**
-   * This code is run when your plugin is being started
+   * This code is run when your plugin is being started - test
    * Use this to modify any UI components or attach to the actions framework test
    *
    * @param flex { typeof import('@twilio/flex-ui') }
