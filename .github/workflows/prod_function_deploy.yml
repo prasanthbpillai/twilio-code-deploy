@@ -15,7 +15,7 @@ jobs:
           node-version: '14'
       - name: Preparing 
         working-directory: Functions
-        run: npm install twilio-cli -g;npm install @twilio-labs/plugin-serverless;twilio plugins:install @twilio-labs/plugin-flex;npm install
+        run: npm install twilio-cli -g;twilio plugins:install @twilio-labs/plugin-serverless;npm install
       - name: Deploying
         run: twilio serverless:deploy --environment=prod --force
 
