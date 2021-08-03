@@ -23,7 +23,7 @@ jobs:
           echo "${{steps.set_dirs.outputs.dir}}"
   buildandrelease:
     needs: prepare
-    if:  needs.prepare.outputs.dir != ''
+    if:  ${{ needs.prepare.outputs.dir != '[]' && needs.prepare.outputs.dir != '' }} 
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -43,7 +43,7 @@ jobs:
       - run: twilio plugins:install @twilio-labs/plugin-flex 
       - name: Preparing 
         working-directory: Flex/${{  matrix.folder }}
-        run: npm install
+        run: pwd;ls;npm install
       - name: Testing
         run: twilio flex:plugins:test
       - name: Deploying
