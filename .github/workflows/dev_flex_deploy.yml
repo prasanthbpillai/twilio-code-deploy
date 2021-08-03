@@ -43,7 +43,7 @@ jobs:
       - run: twilio plugins:install @twilio-labs/plugin-flex 
       - name: Preparing 
         working-directory: Flex/${{  matrix.folder }}
-        run: pwd;ls;npm install
+        run: npm install
       - name: Testing
         run: twilio flex:plugins:test
       - name: Deploying
