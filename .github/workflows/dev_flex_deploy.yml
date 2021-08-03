@@ -19,9 +19,11 @@ jobs:
         # Define step output named dir base on ls command transformed to JSON using jq.
         # replace the above curl command with the following if you want to run the buildandrelease for every commit
         # cd Flex;ls -d */ | sed 's/.$//'| jq -R -s -c 'split("\n")[:-1]'
+      - run: |
+          echo "${{steps.set_dirs.outputs.dir}}"
   buildandrelease:
     needs: prepare
-    if:  ${{fromJson(needs.prepare.outputs.dir)}}
+    if:  ${{fromJson(needs.prepare.outputs.dir)}} != ""
     runs-on: ubuntu-latest
     strategy:
       matrix:
