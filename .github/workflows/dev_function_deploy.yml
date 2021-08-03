@@ -16,7 +16,7 @@ jobs:
       - name: Checking for Changes in Functions
         id: checkfiles
         run: |
-          echo "::set-output name=run_job::$(curl -s  -H "Authorization: token ${{secrets.REPO_TOKEN}}" https://api.github.com/repos/${{github.repository}}/pulls/${{github.event.pull_request.number}}/files | jq -r '.[]  .filename' | cut -d "/" -f 1,2 | jq -R -s -c 'split("\n")[:-1]') | jq '. | contains (["Functions/"])'"
+          echo "::set-output name=run_job::$(curl -s  -H "Authorization: token ${{secrets.REPO_TOKEN}}" https://api.github.com/repos/${{github.repository}}/pulls/${{github.event.pull_request.number}}/files | jq -r '.[]  .filename' | cut -d "/" -f 1,2 | jq -R -s -c 'split("\n")[:-1]' | jq '. | contains (["Functions/"])'"
       - run: |
           echo ${{steps.checkfiles.outputs.run_job}}
   build:
