@@ -20,7 +20,7 @@ jobs:
    
   build:
     needs: precheck
-    if: needs.precheck.outputs.run_job=='true'
+    if: needs.precheck.outputs.run_job == true
     runs-on: ubuntu-latest
     steps:
       - name: Preparing Repository
