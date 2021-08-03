@@ -23,7 +23,7 @@ jobs:
           echo "${{steps.set_dirs.outputs.dir}}"
   buildandrelease:
     needs: prepare
-    if:  ${{needs.prepare.outputs.dir}}!= ""
+    if:  needs.prepare.outputs.dir != ""
     runs-on: ubuntu-latest
     strategy:
       matrix:
