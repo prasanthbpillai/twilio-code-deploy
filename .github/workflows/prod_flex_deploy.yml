@@ -29,6 +29,7 @@ jobs:
     env:
       TWILIO_ACCOUNT_SID: ${{secrets.DEV_ACCOUNT_SID}} 
       TWILIO_AUTH_TOKEN: ${{secrets.DEV_AUTH_TOKEN}}
+     
     steps:
       - name: RepositoryPrep
         uses: actions/checkout@v2
@@ -41,8 +42,9 @@ jobs:
       - run: twilio plugins:install @twilio-labs/plugin-flex 
       - name: Preparing 
         working-directory: Flex/${{  matrix.folder }}
-        run: npm install
+        run: pwd;npm install
       - name: Testing
+        working-directory: Flex/${{  matrix.folder }}
         run: twilio flex:plugins:test
       - name: Deploying
         working-directory: Flex/${{  matrix.folder }}
