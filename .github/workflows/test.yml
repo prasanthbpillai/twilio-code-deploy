@@ -37,10 +37,10 @@ jobs:
           node-version: '14'
       - name: GlobalPackages
         run: npm install twilio-cli -g 
+      - run: pwd
+      - run: ls
       - run: twilio plugins:install @twilio-labs/plugin-flex 
       - name: Preparing 
         working-directory: Flex/${{  matrix.folder }}
-        run: pwd
-      - run: ls
-      - run: npm install
+        run: npm install
    
