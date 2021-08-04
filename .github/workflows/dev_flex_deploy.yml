@@ -28,9 +28,7 @@ jobs:
     strategy:
       matrix:
         folder: ${{fromJson(needs.prepare.outputs.dir)}}
-    env:
-      TWILIO_ACCOUNT_SID: ${{secrets.DEV_ACCOUNT_SID}} 
-      TWILIO_AUTH_TOKEN: ${{secrets.DEV_AUTH_TOKEN}}
+
     steps:
       - name: RepositoryPrep
         uses: actions/checkout@v2
@@ -47,10 +45,10 @@ jobs:
       - run: ls
       - run: npm install
       - name: Testing
-        run: twilio flex:plugins:test
+        run: TWILIO_ACCOUNT_SID=${{secrets.DEV_ACCOUNT_SID}} TWILIO_AUTH_TOKEN=${{secrets.DEV_AUTH_TOKEN}} twilio flex:plugins:test
       - name: Deploying
         working-directory: Flex/${{  matrix.folder }}
-        run: twilio flex:plugins:deploy --changelog "check version"
+        run: TWILIO_ACCOUNT_SID=${{secrets.DEV_ACCOUNT_SID}} TWILIO_AUTH_TOKEN=${{secrets.DEV_AUTH_TOKEN}} twilio flex:plugins:deploy --changelog "check version"
       - name: Releasing
         working-directory: Flex/${{  matrix.folder }}
-        run: twilio flex:plugins:release --plugin ${{  matrix.folder }}@$(node -p -e "require('./package.json').version")
+        run: TWILIO_ACCOUNT_SID=${{secrets.DEV_ACCOUNT_SID}} TWILIO_AUTH_TOKEN=${{secrets.DEV_AUTH_TOKEN}} twilio flex:plugins:release --plugin ${{  matrix.folder }}@$(node -p -e "require('./package.json').version")
