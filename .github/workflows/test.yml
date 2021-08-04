@@ -40,16 +40,18 @@ jobs:
           node-version: '14'
       - name: GlobalPackages
         run: npm install twilio-cli -g 
-      - run: twilio plugins:install @twilio-labs/plugin-flex 
+      - run: cd Flex/${{matrix.folder}} && twilio plugins:install @twilio-labs/plugin-flex 
       - name: Preparing 
-        run: npm install
+        run: pwd
+      - run: cd Flex/${{matrix.folder}} && npm install
       - name: Testing
-        run: twilio flex:plugins:test
+        run: pwd
+      - run: cd Flex/${{matrix.folder}} && twilio flex:plugins:test
       - name: Deploying
-        working-directory: Flex/${{  matrix.folder }}
+        working-directory: Flex/${{matrix.folder}}
         run: twilio flex:plugins:deploy --changelog "check version"
       - name: Releasing
-        working-directory: Flex/${{  matrix.folder }}
+        working-directory: Flex/${{matrix.folder}}
         run: twilio flex:plugins:release --plugin ${{  matrix.folder }}@$(node -p -e "require('./package.json').version")
 
    
