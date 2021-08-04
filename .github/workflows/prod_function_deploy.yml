@@ -1,26 +1,43 @@
 name: Twilio Functions - PRODUCTION
-on: 
-  push:
-    branches: 
-    - master
+on:
+  pull_request:
+    branches:
+      - master
+    types: [closed] 
 jobs:
-  build:
+  precheck:
+    if: github.event.pull_request.merged == true
+    outputs:
+      run_job: ${{ steps.checkfiles.outputs.run_job }}
     runs-on: ubuntu-latest
     steps:
-      - name: RepositoryPrep
+      - name: Preparing Repository
         uses: actions/checkout@v2
-      - name: NodeJSPrep
+      - name: Checking for Changes in Functions
+        id: checkfiles
+        run: |
+          echo "::set-output name=run_job::$(curl -s  -H "Authorization: token ${{secrets.REPO_TOKEN}}" https://api.github.com/repos/${{github.repository}}/pulls/${{github.event.pull_request.number}}/files | jq -r '.[]  .filename' | cut -d "/" -f 1,2 | jq -R -s -c 'split("\n")[:-1]' | jq '. | contains (["Functions/"])')"
+      - run: |
+          echo ${{steps.checkfiles.outputs.run_job}}
+  build:
+    needs: precheck
+    if: needs.precheck.outputs.run_job == 'true' 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Preparing Repository
+        uses: actions/checkout@v2
+      - name: Installing NodeJS and NPM
         uses: actions/setup-node@v2
         with:
           node-version: '14'
-      - name: Preparing 
+      - name: Installing Packages 
         working-directory: Functions
         run: npm install twilio-cli -g;twilio plugins:install @twilio-labs/plugin-serverless;npm install
-      - name: Deploying
+      - name: Deploying Functions
         working-directory: Functions
         env:
-          TWILIO_ACCOUNT_SID: ${{secrets.DEV_ACCOUNT_SID}} 
-          TWILIO_AUTH_TOKEN: ${{secrets.DEV_AUTH_TOKEN}}
+          TWILIO_ACCOUNT_SID: ${{secrets.PROD_ACCOUNT_SID}} 
+          TWILIO_AUTH_TOKEN: ${{secrets.PROD_AUTH_TOKEN}}
         run: twilio serverless:deploy --environment=prod --force
 
   
