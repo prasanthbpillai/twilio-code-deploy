@@ -6,7 +6,7 @@ on:
 
 jobs:
   prepare: # Job that list subdirectories inside flex
-    if: github.event.pull_request.merged == true
+
     runs-on: ubuntu-latest
     outputs:
       dir: ${{ steps.set-dirs.outputs.dir }} # generate output name folders by using inner step output
