@@ -1,25 +1,33 @@
-name: TwilioFlexPluginDevOps
-
-on: push
+name: Twilio Flex Plugins - DEVELOP
+on: 
+  push:
+    branches:
+      - develop
 
 jobs:
-  prepare: # Job that list subdirectories
+  prepare: # Job that list subdirectories inside flex
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     outputs:
-      dir: ${{ steps.set-dirs.outputs.dir }} # generate output name dir by using inner step output
+      dir: ${{ steps.set-dirs.outputs.dir }} # generate output name folders by using inner step output
     steps:
       - uses: actions/checkout@v2
       - id: set-dirs # Give it an id to handle to get step outputs in the outputs key above
-        run: echo "::set-output name=dir::$(cd Flex;ls -d */ | sed 's/.$//'| jq -R -s -c 'split("\n")[:-1]')"
-        # Define step output named dir base on ls command transformed to JSON thanks to jq.
-
-     
-  build:
+        run: |
+          echo "::set-output name=dir::$(curl -s  -H "Authorization: token ${{secrets.REPO_TOKEN}}" https://api.github.com/repos/${{github.repository}}/pulls/21/files | jq -r '.[]  .filename' | cut -d "/" -f 1,2 | sed '/^Flex/!d'  | jq -R -s -c 'split("\n")[:-1]')"
+        # Define step output named dir base on ls command transformed to JSON using jq.
+        # replace the above curl command with the following if you want to run the buildandrelease for every commit
+        # cd Flex;ls -d */ | sed 's/.$//'| jq -R -s -c 'split("\n")[:-1]'
+      - run: |
+          echo "${{steps.set_dirs.outputs.dir}}"
+  buildandrelease:
     needs: prepare
+    if:  ${{ needs.prepare.outputs.dir != '[]' && needs.prepare.outputs.dir != '' }} 
     runs-on: ubuntu-latest
     strategy:
       matrix:
         folder: ${{fromJson(needs.prepare.outputs.dir)}}
+
     steps:
       - name: RepositoryPrep
         uses: actions/checkout@v2
@@ -30,7 +38,9 @@ jobs:
       - name: GlobalPackages
         run: npm install twilio-cli -g 
       - run: twilio plugins:install @twilio-labs/plugin-flex 
-      - name: Building 
+      - name: Preparing 
         working-directory: Flex/${{  matrix.folder }}
-        run: npm install
-    
+        run: pwd
+      - run: ls
+      - run: npm install
+   
