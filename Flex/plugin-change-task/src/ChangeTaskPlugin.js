@@ -30,7 +30,7 @@ export default class ChangeTaskPlugin extends FlexPlugin {
   }
 
   /**
-   * Registers the plugin reducers
+   * Registers the plugin reducers 
    *
    * @param manager { Flex.Manager }
    */
